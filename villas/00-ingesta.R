@@ -3,7 +3,7 @@
 # install.packages("readxl")
 
 # Cargo el archivo como .xlsx
-datos <- readxl::read_excel("Datos_LP.xlsx", 
+datos <- readxl::read_excel("./Datos_LP.xlsx", 
 														col_names = FALSE, 
 														skip = 3)
 
