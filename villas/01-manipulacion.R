@@ -1,3 +1,5 @@
+# En este archivo los tabs son mas grandes, ver por que es. Es puramente estetico.
+
 # Instalo los paquetes necesarios (si aún no los tengo instalados)
 # install.packages("tidyverse")
 
@@ -100,8 +102,20 @@ datos_limpios <- datos %>% # Los pipelines permiten encadenar acciones
 		derrumbe_baño = ifelse(is.na(derrumbe_baño), 0, 1),
 		derrumbe_living = ifelse(is.na(derrumbe_living), 0, 1),
 		no_derrumbe = ifelse(is.na(no_derrumbe), 0, 1),
-		derrumbe_otro = ifelse(is.na(derrumbe_otro), 0, 1)
+		derrumbe_otro = ifelse(is.na(derrumbe_otro), 0, 1),
 
+		# Hay 3 filas que contienen un NA
+		plagas = ifelse(is.na(plagas), "No", plagas),
+		cucarachas = ifelse(cucarachas == "Cucarachas", 1, 0),
+		mosquitos = ifelse(mosquitos == "Mosquitos", 1, 0),
+		ratas = ifelse(ratas == "Ratas", 1, 0),
+		
+		# Cambio de nombres para que no sean tan largos
+		propiedad = ifelse(propiedad == "Propio con algún comprobante de tenencia", "Propio con títulos", propiedad),
+		conexion_electrica = ifelse(conexion_electrica == "Conexión sin medidor a una red eléctrica (“informal”)", "Informal", conexion_electrica),
+		conexion_electrica = ifelse(conexion_electrica == "Conexión a través de un medidor a la red eléctrica", "Con medidor", conexion_electrica),
+		conexion_electrica = ifelse(conexion_electrica == "Conexión a través de un medidor comunitario a la red eléctrica", "Comunitario", conexion_electrica),
+		conexion_electrica = ifelse(conexion_electrica == "No posee conexión a la red eléctrica en la vivienda", "Sin conexión", conexion_electrica)
 	)
 
 ###########################################
@@ -109,5 +123,5 @@ datos_limpios <- datos %>% # Los pipelines permiten encadenar acciones
 ###########################################
 
 # Opción 1: por criterio
-datos_alquiler <-datos_orden %>%
+datos_alquiler <-datos_limpios %>%
 	filter(propiedad == "Alquilado")
