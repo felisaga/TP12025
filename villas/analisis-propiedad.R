@@ -41,14 +41,13 @@ datos_grafico_barras <- datos_limpios %>%
     propiedad = reorder(propiedad, n)
 )
 # grafico de barras horizontal
-ggplot(datos_grafico_barras, aes(x = propiedad, y = n)) +
-  geom_col(show.legend = FALSE, fill = "#ffcc70") +
+ggplot(datos_grafico_barras, aes(x=propiedad, y = n)) +
+  geom_col(show.legend = FALSE, fill = "#1deef5") +
   geom_text(aes(label = paste0(pct, "%")), hjust = -0.1) +
   labs(
-    title = "Distribución de la tenencia de la propiedad",
+    title = "Tenencia de la propiedad",
     x = "Tipo de tenencia",
-    y = "Cantidad"
-  ) +
+    y = "Cantidad de viviendas") +
   coord_flip() + 
   theme_minimal()
 
@@ -77,4 +76,5 @@ ggplot(datos_alquiler) +
 	geom_histogram(fill = "lightgray", col = "black", 
 	               bins = ceiling(sqrt(dim(datos_alquiler)[1])) # numero de intervalos es raiz de N
 								 ) +
-	labs(x = "Costo alquiler ($ARS)", y = "Cant. de alquileres")
+	labs(x = "Costo alquiler ($ARS)", y = "Cant. de alquileres") +
+  theme_minimal()

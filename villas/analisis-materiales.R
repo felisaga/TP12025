@@ -12,11 +12,12 @@ resumen_techo <- datos %>%
 
 # Gráfico de barras simples
 ggplot(resumen_techo, aes(x = fct_reorder(techo_aislante, -n), y = n)) +
-  geom_bar(stat = "identity", fill = "#ffcc70") +
+  geom_bar(stat = "identity", fill = "#1deef5") +
   labs(title = "Aislamiento en el Techo",
-       x = "Respuesta",
+       x = "Posee aislamiento",
        y = "Cantidad de viviendas") +
-  theme_minimal()
+  theme_minimal()+ 
+  theme(plot.title = element_text(hjust = 0.5))
 
 ##################
 # problemas de humedad #
@@ -36,14 +37,15 @@ tabla_humedad$lugar <- recode(tabla_humedad$lugar,
   "humedad_otro" = "Otro"
 )
 ggplot(tabla_humedad, aes(x = reorder(lugar, -cantidad), y = cantidad)) +
-  geom_bar(stat = "identity", fill = "#ffcc70")+
+  geom_bar(stat = "identity", fill = "#1deef5")+
   labs(
     title = "Lugares de humedad reportados",
     x = "Ambiente",
-    y = "Respuestas"
+    y = "Cantidad de viviendas"
   ) +
   theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+ 
+  theme(plot.title = element_text(hjust = 0.5))
 
 
 
@@ -65,7 +67,7 @@ tabla_derrumbe$lugar <- recode(tabla_derrumbe$lugar,
   "derrumbe_otro" = "Otro"
 )
 ggplot(tabla_derrumbe, aes(x = reorder(lugar, -cantidad), y = cantidad)) +
-  geom_bar(stat = "identity", fill = "#ffcc70")+
+  geom_bar(stat = "identity", fill = "#1deef5")+
   labs(
     title = "Riesgo de derrumbe reportado",
     x = "Ambiente",

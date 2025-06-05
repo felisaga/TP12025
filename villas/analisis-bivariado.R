@@ -8,7 +8,7 @@ attach(datos_limpios)
 # Tipo de conexion electrica vs tuvo incendios#
 ###############################################
 # Tabla de contingencia
-tabyl(datos_limpios_elec, conexion_electrica, incendios_por_electricidad) %>%
+tabyl(datos_limpios, conexion_electrica, incendios_por_electricidad) %>%
 	adorn_totals(where = c("row", "col")) %>%
 	adorn_title(placement = "top", "Tipo de conexión eléctrica", "Incendios por electricidad")
 
@@ -24,7 +24,9 @@ datos_limpios %>%
     y = "Porcentaje",
     fill = "¿Hubo incendios?"
   ) +
-  theme_minimal() 
+  theme_minimal() +
+  theme(plot.title = element_text(hjust=0.2, size = 13),
+        axis.text.x = element_text(angle = 45, hjust = 1))
 
 # proporciones condicionales
 proporciones_incendios <- datos_limpios %>%
@@ -47,11 +49,11 @@ proporciones_incendios
 # boxplot comparativo
 ggplot(datos_limpios, aes(x = reorder(propiedad, tiempo_de_residencia, median, na.rm = TRUE), 
                           y = tiempo_de_residencia)) +
-  geom_boxplot(fill = "#ffcc70") +
+  geom_boxplot(fill = "#1deef5") +
   labs(
     x = "Tipo de tenencia de la propiedad",
     y = "Tiempo de residencia (en años)",
-    title = "Tiempo de residencia según tipo de tenencia"
+    title = "Tiempo de residencia vs tipo de tenencia"
   ) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
@@ -76,16 +78,24 @@ resumen_tiempo_vs_propiedad
 ##################################
 # Cant habitantes vs cant menores#
 ##################################
+# se nota que hay datos que dicen que hay mas menores que habitantes, no tiene sentido
+# agrego el + 1 porque seguian sin tener sentido algunas respuestas
+# y aun asi siguen habiendo algunas sin sentido pero no quiero manipular de manera
+# excesiva los datos
+datos_limpios222 <- datos_limpios %>%
+  filter(total_integrantes_menores < total_integrantes) 
+
 # grafico de dispersión
-ggplot(datos_limpios) +
-  aes(x = total_integrantes, y = total_integrantes_menores) +
-  geom_point(color = "red") + # Color de los puntos originales
+ggplot(datos_limpios222) +
+  aes(x = datos_limpios222$total_integrantes, y = datos_limpios222$total_integrantes_menores) +
+  geom_point(color = "#1deef5") + # Color de los puntos originales
   labs(x = "Habitantes totales", y = "Habitantes menores de edad")+
   geom_jitter(width = 0, # Jitter horizontal
               height = 0.5, # Jitter vertical
               alpha = 0.4, # Transparencia
-              color = "red") + # Color de los puntos jitter
-  ggtitle("Relación entre la cantidad de habitantes y cantidad de menores en la vivienda") +
+              color = "#1deef5") + # Color de los puntos jitter
+  ggtitle("Relación entre la cantidad de habitantes 
+          y cantidad de menores en la vivienda") +
   theme_minimal()+
-  scale_x_continuous(breaks = seq(0, max(total_integrantes), by = 1)) +         # modifico los ejes para que quede bien y no ocn numeros sin sentido como 2.5
-  scale_y_continuous(breaks = seq(0, max(total_integrantes_menores), by = 1))
+  scale_x_continuous(breaks = seq(0, max(datos_limpios222$total_integrantes), by = 1)) +         # modifico los ejes para que quede bien y no ocn numeros sin sentido como 2.5
+  scale_y_continuous(breaks = seq(0, max(datos_limpios222$total_integrantes_menores), by = 1))

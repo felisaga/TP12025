@@ -23,15 +23,16 @@ datos_grafico_barras <- datos_limpios %>%
 )
 # grafico de barras horizontal
 ggplot(datos_grafico_barras, aes(x = conexion_electrica, y = n)) +
-  geom_col(show.legend = FALSE) +
+  geom_col(show.legend = FALSE, fill="#1deef5") +
   geom_text(aes(label = paste0(pct, "%")), hjust = -0.1) +
   labs(
-    title = "Distribución de la conexion electrica",
+    title = "Tipo de conexion a la red eléctrica",
     x = "Tipo de conexion",
-    y = "Cantidad"
+    y = "Cantidad de viviendas"
   ) +
   coord_flip() + 
-  theme_minimal()
+  theme_minimal()+
+  expand_limits(y = max(datos_grafico_barras$n) * 1.15)
 
 
 ####################
@@ -50,7 +51,11 @@ ggplot(resumen_incendios, aes(x = "", y = n, fill = incendios_por_electricidad))
   geom_text(aes(label = etiqueta), position = position_stack(vjust = 0.5)) +
   labs(title = "Incendios por condiciones eléctricas en el último año") +
   scale_fill_brewer(palette = "Set2") +
-  theme(legend.position = "none")
+  scale_fill_manual(values = c("Sí" = "tomato", "No" = "#1deef5")) +
+  theme(
+    legend.position = "none",
+    plot.title = element_text(hjust = 0.5, size = 14)
+  )
 
 
 
@@ -74,7 +79,8 @@ datos_limpios <- datos_limpios %>%
     cortes_en_verano = factor(cortes_en_verano, levels = niveles_ordenados, ordered = TRUE),
     cortes_en_invierno = factor(cortes_en_invierno, levels = niveles_ordenados, ordered = TRUE),
     cortes_anuales = pmax(cortes_en_verano, cortes_en_invierno)  # toma el valor más grave
-  )
+  )# a esto lo tengo que ejecutar linea por linea si no no me anda
+
 
 tabla_cortes <- datos_limpios %>%
   tabyl(cortes_anuales) %>%
@@ -95,7 +101,7 @@ datos_limpios %>%
   count(cortes_anuales) %>%
   mutate(cortes_anuales = fct_reorder(cortes_anuales, n)) %>%
   ggplot(aes(x = cortes_anuales, y = n)) +
-  geom_col(fill = "#ffcc70") +
+  geom_col(fill = "#1deef5") +
   coord_flip() +
   labs(
     title = "Frecuencia de cortes eléctricos anuales",

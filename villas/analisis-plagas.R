@@ -20,8 +20,11 @@ ggplot(resumen_presencia_plagas, aes(x = "", y = n, fill = plagas)) +
   geom_text(aes(label = etiqueta), position = position_stack(vjust = 0.5)) +
   labs(title = "Presencia de plagas en el hogar y el barrio") +
   scale_fill_brewer(palette = "Set2") +
-  theme(legend.position = "none")
-
+  theme(legend.position = "none")+scale_fill_manual(values = c("Sí" = "tomato", "No" = "#1deef5")) +
+  theme(
+    legend.position = "none",
+    plot.title = element_text(hjust = 0.5, size = 14)
+  )
 
 ##################
 # tipo de plaga #
@@ -38,9 +41,12 @@ moda <- tabla_plagas$plaga[which.max(tabla_plagas$frecuencia)]
 # la moda es mosquitos
 
 ggplot(tabla_plagas, aes(x = reorder(plaga, -frecuencia), y = frecuencia)) +
-  geom_col(fill = "#ffcc70") +
+  geom_col(fill = "#1deef5") +
   labs(title = "Cantidad de plagas reportadas",
        x = "Plaga",
        y = "Cantidad de viviendas con plaga") +
   theme_minimal() +
-  theme(legend.position = "none")
+  theme(
+    legend.position = "none",
+    plot.title = element_text(hjust = 0.5, size = 14)
+  )
